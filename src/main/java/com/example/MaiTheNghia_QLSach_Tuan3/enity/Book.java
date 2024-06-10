@@ -1,6 +1,8 @@
 package com.example.MaiTheNghia_QLSach_Tuan3.enity;
 
 import com.example.MaiTheNghia_QLSach_Tuan3.validator.annotation.ValidCategoryId;
+import com.example.MaiTheNghia_QLSach_Tuan3.validator.annotation.ValidUserId;
+import com.example.MaiTheNghia_QLSach_Tuan3.validator.annotation.ValidUsername;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -25,9 +27,15 @@ public class Book{
     @NotNull(message = "Price can phai nhap!")
     private Double price;
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ValidCategoryId
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ValidUserId
+    private User user;
+
 }
 
 
