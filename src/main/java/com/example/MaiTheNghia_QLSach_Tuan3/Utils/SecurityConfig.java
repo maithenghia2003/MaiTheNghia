@@ -1,6 +1,5 @@
 package com.example.MaiTheNghia_QLSach_Tuan3.Utils;
 
-
 import com.example.MaiTheNghia_QLSach_Tuan3.services.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+@SuppressWarnings("ALL")
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -38,31 +38,31 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
+        return http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers( "/css/**", "/js/**", "/", "/register", "/error")
-                        .permitAll()
-                        .requestMatchers( "/books/edit", "/books/delete")
-                        .hasAnyAuthority("ADMIN")
-                        .requestMatchers("/books", "/books/add")
-                        .hasAnyAuthority("ADMIN", "USER")
-                        .requestMatchers("/api/**")
+                        .requestMatchers("/css/**", "/js/**", "/", "/register", "/error").permitAll()
+                        .requestMatchers("/books/edit/**", "/books/delete/**", "/books/add/**")
+                        .hasAuthority("ADMIN")
+                        .requestMatchers("/books")
                         .hasAnyAuthority("ADMIN", "USER")
                         .anyRequest().authenticated()
                 )
-                .logout(logout -> logout.logoutUrl("/logout")
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .permitAll()
                 )
-                .formLogin(formLogin -> formLogin.loginPage("/login")
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/")
                         .permitAll()
                 )
-                .rememberMe(rememberMe -> rememberMe.key("uniqueAndSecret")
+                .rememberMe(rememberMe -> rememberMe
+                        .key("uniqueAndSecret")
                         .tokenValiditySeconds(86400)
                         .userDetailsService(userDetailsService())
                 )

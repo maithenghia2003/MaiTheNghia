@@ -27,7 +27,7 @@ public class Book{
     @NotNull(message = "Price can phai nhap!")
     private Double price;
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @JoinColumn(name = "category_id")
     @ValidCategoryId
     private Category category;
 
